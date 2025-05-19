@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品列表 - Google风格</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">A</a>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="index.html">所有产品</a>
+                <a href="about.html">关于</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="搜索产品...">
+                <button id="searchButton">搜索</button>
+            </div>
+        </section>
+
+        <section class="products-section">
+            <div class="products-grid" id="productsGrid">
+                <!-- 产品卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2023 产品列表 - 模仿Google风格</p>
+    </footer>
+
+    <!-- 产品详情模态框 -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalProductName"></h2>
+                <div class="modal-actions">
+                    <a id="productLink" class="product-link-btn" target="_blank">前往官网</a>
+                </div>
+            </div>
+            <div id="modalProductDetail" class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

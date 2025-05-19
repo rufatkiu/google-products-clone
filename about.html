@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 团队成员弹窗样式 */
+        .member-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            max-width: 90%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .member-modal .modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .member-modal .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .member-modal .close {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* 遮罩层 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">A</a>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="index.html">所有产品</a>
+                <a href="about.html">关于</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main about-page">
+        <section class="about-section">
+            <h1>关于产品列表</h1>
+            <div class="about-content">
+                <p>这是一个模仿Google产品风格的展示页面，用于展示各类产品信息。</p>
+                
+                <h2>主要功能</h2>
+                <ul>
+                    <li>产品卡片展示</li>
+                    <li>产品搜索功能</li>
+                    <li>产品详情查看</li>
+                    <li>响应式设计</li>
+                </ul>
+
+                <h2>技术实现</h2>
+                <p>使用HTML5、CSS3和JavaScript构建，无任何框架依赖。</p>
+
+                <h2>我们的团队</h2>
+                <div class="team-members">
+                    <div class="team-member">
+                        <h3>张伟</h3>
+                        <p class="position">产品经理</p>
+                        <p>负责产品规划和需求分析</p>
+                        <button class="member-detail-btn">查看详情</button>
+                    </div>
+                    <div class="team-member">
+                        <h3>李娜</h3>
+                        <p class="position">前端开发</p>
+                        <p>负责界面设计和功能实现</p>
+                        <button class="member-detail-btn">查看详情</button>
+                    </div>
+                    <div class="team-member">
+                        <h3>王强</h3>
+                        <p class="position">后端开发</p>
+                        <p>负责数据处理和API开发</p>
+                        <button class="member-detail-btn">查看详情</button>
+                    </div>
+                </div>
+
+                <h2>联系我们</h2>
+                <p>如有任何问题，请联系：contact@example.com</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2023 产品列表 - 模仿Google风格</p>
+    </footer>
+
+    <!-- 产品详情模态窗口 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modalProductName"></span>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modalProductDetail"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 团队成员详情弹窗 -->
+    <div id="memberModal" class="member-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="memberModalTitle">成员详情</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="memberModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 遮罩层 -->
+    <div class="modal-overlay"></div>
+
+    <script>
+        // 团队成员弹窗交互逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const memberModal = document.getElementById('memberModal');
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const memberCloseBtn = memberModal.querySelector('.close');
+            
+            // 团队成员数据
+            const teamMembers = {
+                '张伟': {
+                    position: '产品经理',
+                    department: '产品部',
+                    bio: '10年产品管理经验，擅长需求分析和产品规划',
+                    skills: '产品设计, 用户研究, 项目管理'
+                },
+                '李娜': {
+                    position: '前端开发',
+                    department: '技术部',
+                    bio: '5年前端开发经验，精通React和Vue框架',
+                    skills: 'JavaScript, HTML5, CSS3, React, Vue'
+                },
+                '王强': {
+                    position: '后端开发',
+                    department: '技术部',
+                    bio: '8年后端开发经验，专注高性能系统架构',
+                    skills: 'Java, Python, Node.js, MySQL, Redis'
+                }
+            };
+
+            // 为所有成员详情按钮添加点击事件
+            document.querySelectorAll('.member-detail-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const memberName = this.parentNode.querySelector('h3').textContent;
+                    openMemberModal(memberName);
+                });
+            });
+            
+            // 打开成员弹窗
+            function openMemberModal(memberName) {
+                const member = teamMembers[memberName];
+                
+                document.getElementById('memberModalTitle').textContent = memberName;
+                document.getElementById('memberModalContent').innerHTML = `
+                    <div class="member-detail">
+                        <p><strong>职位:</strong> ${member.position}</p>
+                        <p><strong>部门:</strong> ${member.department}</p>
+                        <p><strong>简介:</strong> ${member.bio}</p>
+                        <p><strong>技能:</strong> ${member.skills}</p>
+                    </div>
+                `;
+                
+                memberModal.style.display = 'block';
+                modalOverlay.style.display = 'block';
+            }
+            
+            // 关闭弹窗
+            function closeMemberModal() {
+                memberModal.style.display = 'none';
+                modalOverlay.style.display = 'none';
+            }
+            
+            // 事件监听
+            memberCloseBtn.addEventListener('click', closeMemberModal);
+            modalOverlay.addEventListener('click', closeMemberModal);
+            
+            // ESC键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && memberModal.style.display === 'block') {
+                    closeMemberModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
